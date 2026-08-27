@@ -1,19 +1,33 @@
 import requests
 
-cep = "01310930"
+def consultar_cep(cep):
+    url = f"https://viacep.com.br/ws/{cep}/json/"
+    resposta = requests.get(url)
+    dados = resposta.json()
+    return dados
 
-url = f"https://viacep.com.br/ws/{cep}/json/"
+def exibir_endereco(dados):
+    print("CEP:", dados["cep"])
+    print("Rua:", dados["logradouro"])
+    print("Bairro:", dados["bairro"])
+    print("Cidade:", dados["localidade"])
+    print("Estado:", dados["uf"])
 
-resposta = requests.get(url)
+while True:
+    print("\n=== Consulta de CEP ===")
+    print("1 - Buscar um CEP")
+    print("2 - Sair")
 
-dados = resposta.json()
+    opcao = input("Escolha uma opção: ")
 
-print("CEP:", dados["cep"])
+    if opcao == "1":
+        cep = input("Digite o CEP (só números): ")
+        dados = consultar_cep(cep)
+        exibir_endereco(dados)
 
-print("Rua:", dados["logradouro"])
+    elif opcao == "2":
+        print("Até logo!")
+        break
 
-print("Bairro:", dados["bairro"])
-
-print("Cidade:", dados["localidade"])
-
-print("Estado:", dados["uf"])
+    else:
+        print("Opção inválida.")
